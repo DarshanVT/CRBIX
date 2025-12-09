@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <display-name>CRBIX Payment App</display-name>
+
+    <!-- Cart Summary Servlet -->
+    <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>com.payment.PaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/PaymentServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- Final Payment Servlet -->
+    <servlet>
+        <servlet-name>PaymentServlet2</servlet-name>
+        <servlet-class>com.payment.PaymentServlet2</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet2</servlet-name>
+        <url-pattern>/PaymentServlet2</url-pattern>
+    </servlet-mapping>
+
+    <!-- Back Button -->
+    <servlet>
+        <servlet-name>BackServlet</servlet-name>
+        <servlet-class>com.payment.BackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BackServlet</servlet-name>
+        <url-pattern>/BackServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>
