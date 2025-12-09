@@ -11,7 +11,7 @@ public class Cart implements Serializable {
     private Map<String,Integer> items = new LinkedHashMap<>(); // itemId -> qty
     private Map<String,Item> catalog = new LinkedHashMap<>();
 
-    // 18% GST
+    
     private static final BigDecimal GST_RATE = new BigDecimal("0.18");
 
     public void setCatalog(Map<String,Item> catalog){ this.catalog = catalog; }
