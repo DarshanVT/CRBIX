@@ -103,7 +103,7 @@ public class PharmacyApp {
         System.out.println("Quantity: " + q);
         System.out.println("Total Price: ₹" + total);
         System.out.println("Profit Earned: ₹" + profit);    
-        System.out.println("************************");
+        System.out.println("**********************");
     }
 
     static void showStock() {
@@ -122,7 +122,7 @@ public class PharmacyApp {
             );
 
             if (m.qty <= 5) {
-                System.out.println("⚠ LOW STOCK WARNING!");
+                System.out.println(" LOW STOCK WARNING!");
             }
         }
     }
