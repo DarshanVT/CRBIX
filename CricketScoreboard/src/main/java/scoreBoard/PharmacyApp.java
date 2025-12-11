@@ -4,16 +4,17 @@ import java.util.*;
 
 class Medicine {
     String name;
-    double price;
+    double costPrice;    
+    double sellPrice;    
     int qty;
 
-    Medicine(String name, double price, int qty) {
+    Medicine(String name, double costPrice, double sellPrice, int qty) {
         this.name = name;
-        this.price = price;
+        this.costPrice = costPrice;
+        this.sellPrice = sellPrice;
         this.qty = qty;
     }
 }
-
 public class PharmacyApp {
 
     static ArrayList<Medicine> inventory = new ArrayList<>();
@@ -24,7 +25,7 @@ public class PharmacyApp {
 
         int choice;
         do {
-            System.out.println("\n  PHARMACY SYSTEM ");
+            System.out.println("\n====== MINI PHARMACY SYSTEM ======");
             System.out.println("1. Add New Medicine");
             System.out.println("2. Sell Medicine ");
             System.out.println("3. View Stock Report");
@@ -37,7 +38,7 @@ public class PharmacyApp {
 
             switch (choice) {
                 case 1 -> addMedicine();
-                case 2 -> sellMedicine();
+                case 2 -> sellMedicine();     
                 case 3 -> showStock();
                 case 4 -> searchMedicine();
                 case 5 -> updateQty();
@@ -48,19 +49,22 @@ public class PharmacyApp {
 
         } while (choice != 0);
     }
-
+    
     static void addMedicine() {
         sc.nextLine();
         System.out.print("Medicine name: ");
         String name = sc.nextLine();
-        
-        System.out.print("Quantity: (Packet of 10 pills)");
+
+        System.out.print("Cost Price (your purchase price): ");
+        double cost = sc.nextDouble();
+
+        System.out.print("Selling Price (price to customer): ");
+        double sell = sc.nextDouble();
+
+        System.out.print("Quantity (packet of 10 pills): ");
         int qty = sc.nextInt();
 
-        System.out.print("Price: (in RS)");
-        double price = sc.nextDouble();
-
-        inventory.add(new Medicine(name, price, qty));
+        inventory.add(new Medicine(name, cost, sell, qty));
         System.out.println("Medicine added successfully!");
     }
 
@@ -83,35 +87,47 @@ public class PharmacyApp {
             return;
         }
 
-        double total = q * med.price;
+        double total = q * med.sellPrice;
+        double profit = (med.sellPrice - med.costPrice) * q;  
         med.qty -= q;
 
-        String bill = "Sold: " + name + " | Qty: " + q + " | Total: ₹" + total;
+        String bill = "Sold: " + name + 
+                      " | Qty: " + q + 
+                      " | Total: ₹" + total + 
+                      " | Profit: ₹" + profit;
+
         bills.add(bill);
 
-        System.out.println("\n BILL ");
-        System.out.println(bill);
-        
+        System.out.println("\n******** BILL ********");
+        System.out.println("Medicine: " + name);
+        System.out.println("Quantity: " + q);
+        System.out.println("Total Price: ₹" + total);
+        System.out.println("Profit Earned: ₹" + profit);    
+        System.out.println("************************");
     }
 
-    
     static void showStock() {
-        System.out.println("\n STOCK REPORT ");
+        System.out.println("\n====== STOCK REPORT ======");
         if (inventory.isEmpty()) {
             System.out.println("No medicines available.");
             return;
         }
 
         for (Medicine m : inventory) {
-            System.out.println(m.name + " | Price: ₹" + m.price + " | Qty: " + m.qty);
+            System.out.println(
+                m.name + 
+                " | Cost Price: ₹" + m.costPrice +
+                " | Sell Price: ₹" + m.sellPrice +
+                " | Qty: " + m.qty
+            );
 
             if (m.qty <= 5) {
-                System.out.println(" LOW STOCK WARNING!");
+                System.out.println("⚠ LOW STOCK WARNING!");
             }
         }
     }
 
-   
+
     static void searchMedicine() {
         sc.nextLine();
         System.out.print("Enter name to search: ");
@@ -121,11 +137,13 @@ public class PharmacyApp {
         if (m == null) {
             System.out.println(" Not found!");
         } else {
-            System.out.println("Found: " + m.name + " | Price: ₹" + m.price + " | Qty: " + m.qty);
+            System.out.println("Found: " + m.name + 
+                               " | Cost: ₹" + m.costPrice + 
+                               " | Sell: ₹" + m.sellPrice + 
+                               " | Qty: " + m.qty);
         }
     }
 
-    
     static void updateQty() {
         sc.nextLine();
         System.out.print("Medicine name: ");
@@ -143,7 +161,6 @@ public class PharmacyApp {
         System.out.println(" Quantity updated!");
     }
 
-    
     static void deleteMedicine() {
         sc.nextLine();
         System.out.print("Enter name to delete: ");
@@ -158,7 +175,7 @@ public class PharmacyApp {
         inventory.remove(m);
         System.out.println(" Medicine deleted!");
     }
-
+   
     static Medicine find(String name) {
         for (Medicine m : inventory) {
             if (m.name.equalsIgnoreCase(name)) {
