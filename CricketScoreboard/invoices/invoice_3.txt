@@ -1,0 +1,11 @@
+------------ Car Wash Invoice ------------
+Booking No: 3
+Customer: Raksha
+Car Model: Supra
+Service: Full Body Polish (2000 rs)
+Date: 12/12/2025
+Time: 6 pm
+Payment Status: Paid
+------------------------------------------
+Total: Rs. 2000.0
+------------------------------------------

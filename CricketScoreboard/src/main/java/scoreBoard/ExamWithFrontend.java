@@ -241,18 +241,18 @@ public class ExamWithFrontend {
 
         gbc.weightx = 0; gbc.gridx = 0; gbc.gridy++;
         left.add(new JLabel("Option A:"), gbc);
-        gbc.gridx = 1; gbc.gridy++; left.add(new JLabel("Option B:"), gbc);
+        gbc.gridx = 0; gbc.gridy++; left.add(new JLabel("Option B:"), gbc);
         gbc.gridx = 0; gbc.gridy++; left.add(new JLabel("Option C:"), gbc);
-        gbc.gridx = 1; gbc.gridy++; left.add(new JLabel("Option D:"), gbc);
+        gbc.gridx = 0; gbc.gridy++; left.add(new JLabel("Option D:"), gbc);
 
         // Options fields
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
+        gbc.gridx = 1; gbc.gridy = 1; gbc.gridwidth = 1;
         JTextField optA = new JTextField();
         left.add(optA, gbc);
         gbc.gridx = 1; gbc.gridy = 2;
         JTextField optB = new JTextField();
         left.add(optB, gbc);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 1; gbc.gridy = 3;
         JTextField optC = new JTextField();
         left.add(optC, gbc);
         gbc.gridx = 1; gbc.gridy = 4;

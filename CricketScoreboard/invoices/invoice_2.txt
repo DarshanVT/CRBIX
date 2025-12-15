@@ -1,0 +1,11 @@
+------------ Car Wash Invoice ------------
+Booking No: 2
+Customer: Omkar
+Car Model: BMW
+Service: Interior Detailing (1200 rs)
+Date: 01/04/2025
+Time: 5 pm
+Payment Status: Paid
+------------------------------------------
+Total: Rs. 1200.0
+------------------------------------------

@@ -1,0 +1,11 @@
+------------ Car Wash Invoice ------------
+Booking No: 1
+Customer: Darshan
+Car Model: Fortuner
+Service: Full Body Polish (2000 rs)
+Date: 31/03/2025
+Time: 5 pm
+Payment Status: Paid
+------------------------------------------
+Total: Rs. 2000.0
+------------------------------------------
