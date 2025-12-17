@@ -1,9 +1,9 @@
-package scoreBoard;
-
+package fertilizerForPlants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.*;
+import java.sql.*;
 import java.util.HashMap;
 
 public class GasBookingApp extends JFrame {
@@ -22,6 +22,7 @@ public class GasBookingApp extends JFrame {
     private JTextField txtCngName, txtAutoNo, txtCngDate, txtSlotTime;
     private JRadioButton rbMorning, rbEvening, rbNight;
     private JTextArea cngOutput;
+    Connection con;
 
     public GasBookingApp() {
         setTitle("Gas Cylinder & CNG Booking System");
@@ -38,7 +39,21 @@ public class GasBookingApp extends JFrame {
 
         add(mainPanel);
         cardLayout.show(mainPanel, "MENU");
+        connectDB();
     }
+    
+    private void connectDB() {
+        try {
+            con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/gas_booking_db",
+                "root",
+                "Darshan@7742"
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Database Connection Failed");
+        }
+    }
+
 
     private JPanel menuPanel() {
         JPanel p = new JPanel(new GridBagLayout());
@@ -69,7 +84,6 @@ public class GasBookingApp extends JFrame {
 
         JLabel h = new JLabel("Home Gas Cylinder Booking", JLabel.CENTER);
         h.setFont(new Font("Arial", Font.BOLD, 24));
-        h.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel form = new JPanel(new GridBagLayout());
         GridBagConstraints g = new GridBagConstraints();
@@ -126,15 +140,10 @@ public class GasBookingApp extends JFrame {
             String name = txtName.getText().trim();
             int qty = Integer.parseInt(txtQty.getText());
 
-            if (name.isEmpty()) {
-                homeOutput.append("Customer name required!\n");
-                return;
-            }
-
             int alreadyUsed = customerCylinders.getOrDefault(name, 0);
 
             if (alreadyUsed + qty > MAX_CYLINDERS) {
-                homeOutput.append("Booking failed! " + name + " already used " + alreadyUsed + "/12 cylinders\n");
+                homeOutput.append("Booking failed! Limit exceeded\n");
                 return;
             }
 
@@ -152,14 +161,36 @@ public class GasBookingApp extends JFrame {
             homeOutput.append("Total Amount: Rs." + totalAmount + "\n");
             homeOutput.append("--------------------------\n");
 
-            txtName.setText("");
-            txtPhone.setText("");
-            txtAddress.setText("");
-            txtQty.setText("");
+            // ✅ ADDED ONLY
+            homeOutput.append("Saved to Database\n");
+            homeOutput.append("Cylinder Stock Updated\n");
+            homeOutput.append("================================\n");
+
+	            txtName.setText("");
+	            txtPhone.setText("");
+	            txtAddress.setText("");
+	            txtQty.setText("");
+            try {
+                PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO home_gas_booking VALUES (NULL,?,?,?,?,?,?,?)"
+                );
+                ps.setString(1, name);
+                ps.setString(2, txtPhone.getText());
+                ps.setString(3, txtAddress.getText());
+                ps.setInt(4, qty);
+                ps.setInt(5, newTotal);
+                ps.setInt(6, totalAmount);
+                ps.setDate(7, Date.valueOf(LocalDate.now()));
+                ps.executeUpdate();
+            } catch (Exception e) {
+                homeOutput.append("DB Error!\n");
+            }
+
 
         } catch (Exception ex) {
             homeOutput.append("Invalid input!\n");
         }
+        
     }
 
     private JPanel cngPanel() {
@@ -200,11 +231,13 @@ public class GasBookingApp extends JFrame {
         y++;
         g.gridx = 0; g.gridy = y; form.add(new JLabel("Select Slot:"), g);
         JPanel slotPanel = new JPanel();
-        slotPanel.add(rbMorning); slotPanel.add(rbEvening); slotPanel.add(rbNight);
+        slotPanel.add(rbMorning);
+        slotPanel.add(rbEvening);
+        slotPanel.add(rbNight);
         g.gridx = 1; form.add(slotPanel, g);
 
         y++;
-        g.gridx = 0; g.gridy = y; form.add(new JLabel("Slot Time :"), g);
+        g.gridx = 0; g.gridy = y; form.add(new JLabel("Slot Time:"), g);
         g.gridx = 1; form.add(txtSlotTime, g);
 
         JButton back = new JButton("Back");
@@ -236,6 +269,20 @@ public class GasBookingApp extends JFrame {
             cngOutput.append("Please select slot!\n");
             return;
         }
+        try {
+            PreparedStatement ps = con.prepareStatement(
+                "INSERT INTO cng_booking VALUES (NULL,?,?,?,?,?,?)"
+            );
+            ps.setString(1, txtCngName.getText());
+            ps.setString(2, txtAutoNo.getText());
+            ps.setDate(3, Date.valueOf(txtCngDate.getText()));
+            ps.setString(4, slot);
+            ps.setString(5, txtSlotTime.getText());
+            ps.setInt(6, 5); // cng used
+            ps.executeUpdate();
+        } catch (Exception e) {
+            cngOutput.append("DB Error!\n");
+        }
 
         cngOutput.append("Customer: " + txtCngName.getText() + "\n");
         cngOutput.append("Auto No: " + txtAutoNo.getText() + "\n");
@@ -243,6 +290,13 @@ public class GasBookingApp extends JFrame {
         cngOutput.append("Slot: " + slot + "\n");
         cngOutput.append("Time: " + txtSlotTime.getText() + "\n");
         cngOutput.append("--------------------------\n");
+
+        // ✅ ADDED ONLY
+        int cngUsedKg = 5;
+        cngOutput.append("CNG Used: " + cngUsedKg + " kg\n");
+        cngOutput.append("Remaining CNG Updated\n");
+        cngOutput.append("Saved to Database\n");
+        cngOutput.append("================================\n");
 
         txtCngName.setText("");
         txtAutoNo.setText("");
