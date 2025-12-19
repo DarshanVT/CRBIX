@@ -1,4 +1,4 @@
-package paymentGateway;
+package dairyProducts;
 
 import javax.swing.*;
 import javax.swing.event.*;

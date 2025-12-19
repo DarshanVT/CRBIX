@@ -1,4 +1,4 @@
-package paymentGateway;
+package dairyProducts;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -46,7 +46,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        p1 = new Player(100, HEIGHT/2, 28, Color.CYAN);
+        p1 = new Player(WIDTH-100, HEIGHT/2, 28, Color.CYAN);
         p2 = new Player(WIDTH-100, HEIGHT/2, 28, Color.ORANGE);
         timer = new Timer(16, this); 
     }
